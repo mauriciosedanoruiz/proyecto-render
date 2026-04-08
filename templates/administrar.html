@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Administrar</title>
+    <link rel="stylesheet" href="/static/styles.css">
+</head>
+<body>
+
+<h1>Lista de Personas</h1>
+
+<table>
+<tr>
+    <th>ID</th>
+    <th>DNI</th>
+    <th>Nombre</th>
+    <th>Apellido</th>
+    <th>Dirección</th>
+    <th>Teléfono</th>
+    <th>Acción</th>
+</tr>
+
+{% for persona in personas %}
+<tr>
+    <td>{{ persona[0] }}</td>
+    <td>{{ persona[1] }}</td>
+    <td>{{ persona[2] }}</td>
+    <td>{{ persona[3] }}</td>
+    <td>{{ persona[4] }}</td>
+    <td>{{ persona[5] }}</td>
+    <td>
+        <a href="/eliminar/{{ persona[0] }}">Eliminar</a>
+    </td>
+</tr>
+{% endfor %}
+
+</table>
+
+<br>
+<a href="/">Volver</a>
+
+</body>
+</html>
