@@ -1,13 +1,37 @@
 from flask import Flask, render_template, request, redirect
 import psycopg2
+import os
 
 app = Flask(__name__)
 
-# 🔑 TU BASE DE DATOS (YA CONFIGURADA)
-DATABASE_URL = "postgresql://personas_user:8wDXqXYNcMxMUc1XPYvvKpNDzvGvoeLs@dpg-d7bc4th4tr6s73ai5bo0-a.oregon-postgres.render.com/personas_db_g1rv"
+# 🔑 DATABASE DESDE RENDER
+DATABASE_URL = os.getenv("DATABASE_URL")
 
 def get_connection():
     return psycopg2.connect(DATABASE_URL)
+
+# 🗄️ CREAR TABLA AUTOMÁTICAMENTE
+def crear_tabla():
+    conn = get_connection()
+    cursor = conn.cursor()
+
+    cursor.execute("""
+    CREATE TABLE IF NOT EXISTS personas (
+        id SERIAL PRIMARY KEY,
+        dni VARCHAR(20) NOT NULL,
+        nombre VARCHAR(100) NOT NULL,
+        apellido VARCHAR(100) NOT NULL,
+        direccion TEXT,
+        telefono VARCHAR(20)
+    );
+    """)
+
+    conn.commit()
+    cursor.close()
+    conn.close()
+
+# Ejecutar al iniciar
+crear_tabla()
 
 # 🏠 FORMULARIO
 @app.route('/')
